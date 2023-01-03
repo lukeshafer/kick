@@ -1,0 +1,41 @@
+{
+	"room": {
+		"width": 1000,
+		"height": 500,
+		"background": "lime"
+	},
+	"bounds": {
+		"width": 1000,
+		"height": 500
+	},
+	"platforms": [
+		{
+			"left": 100,
+			"width": 90,
+			"bottom": 150,
+			"height": 10,
+			"background": "black"
+		},
+		{
+			"left": 800,
+			"width": 90,
+			"bottom": 150,
+			"height": 10,
+			"background": "black"
+		},
+		{
+			"left": 400,
+			"width": 90,
+			"bottom": 8,
+			"height": 10,
+			"background": "black"
+		},
+		{
+			"left": 500,
+			"width": 90,
+			"bottom": 54,
+			"height": 10,
+			"background": "black"
+		}
+	]
+}

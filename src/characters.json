@@ -1,0 +1,14 @@
+{
+	"Kicko": {
+		"neutral": "/pixil-f0.png",
+		"move1": "/pixil-f1.png",
+		"move2": "/pixil-f2.png",
+		"kick": "/pixil-f3.png"
+	},
+	"TonyOnion": {
+		"neutral": "/tonyonion-f0.png",
+		"move1": "/tonyonion-f1.png",
+		"move2": "/tonyonion-f2.png",
+		"kick": "/tonyonion-f3.png"
+	}
+}
