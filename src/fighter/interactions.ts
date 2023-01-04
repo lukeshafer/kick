@@ -3,23 +3,15 @@ import type { Fighter, RoomState } from '../game/state';
 
 let locked = false;
 
-export const move = (fighter: Fighter) => {
+export const walk = (fighter: Fighter) => {
 	const {
 		direction: [newDir],
 		frame: [frame, setFrame],
-		isMidair: [, setIsMidair],
-		xpos: [x, setX],
-		platform: [platform, setPlatform],
+		hTargetSpeed: [, setHTargetSpeed],
 	} = fighter;
-	const speed = 5;
-	const moveDist = newDir() === 'left' ? -speed : speed;
 
-	if (platform() && (x() > platform()!.right || x() < platform()!.left)) {
-		setIsMidair(true);
-		setPlatform(undefined);
-	}
-	//setDir(newDir);
-	setX(x() + moveDist);
+	setHTargetSpeed(newDir() === 'right' ? 5 : -5);
+
 	if (!locked) {
 		if (frame() === 'move2') setFrame('move1');
 		else setFrame('move2');
@@ -28,8 +20,23 @@ export const move = (fighter: Fighter) => {
 	}
 };
 
+export const horizontalMotion = (fighter: Fighter) => {
+	const ACCEL = 0.8;
+	const {
+		xpos: [x, setX],
+		hSpeed: [hSpeed, setHSpeed],
+		hTargetSpeed: [hTargetSpeed],
+	} = fighter;
+	if (hSpeed() < hTargetSpeed()) {
+		setHSpeed(Math.min(hSpeed() + ACCEL, hTargetSpeed()));
+	} else if (hSpeed() > hTargetSpeed()) {
+		setHSpeed(Math.max(hSpeed() - ACCEL, hTargetSpeed()));
+	}
+	setX(x() + hSpeed());
+};
+
 export const gravity = ([vSpeed, setVSpeed]: Signal<number>) => {
-	setVSpeed(vSpeed() - 0.18);
+	setVSpeed(vSpeed() - 0.35);
 };
 
 export const groundDetection = (
@@ -42,8 +49,12 @@ export const groundDetection = (
 		ypos: [y, setY],
 		vSpeed: [vSpeed, setVSpeed],
 		isMidair: [, setIsMidair],
-		platform: [, setPlatform],
+		platform: [platform, setPlatform],
 	} = fighter;
+	if (platform() && (x() > platform()!.right || x() < platform()!.left)) {
+		setIsMidair(true);
+		setPlatform(undefined);
+	}
 	if (x() > room.width - width) setX(room.width - width);
 	if (x() < 0) setX(0);
 	if (y() > room.height - width) {
@@ -92,6 +103,7 @@ export const kickDetection = (fighter: Fighter, state: RoomState) => {
 			const {
 				xpos: [fx],
 				ypos: [fy],
+				hSpeed: [, setHSpeed],
 				width: fwidth,
 			} = f;
 			const fLeft = fx();
@@ -107,22 +119,8 @@ export const kickDetection = (fighter: Fighter, state: RoomState) => {
 				y() <= fy() + fHeight &&
 				y() + FOOTHEIGHT >= fy()
 			) {
-				console.log('kick');
+				setHSpeed(dir() === 'left' ? -18 : 18);
 			}
 		});
 	}
-
-	//state.fighters.forEach((f) => {
-	//if (f.index === fighter.index) {
-	//return;
-	//}
-	//if (!f.isKicking[0]()) return;
-	//if (f.direction[0]() === 'left' && f.xpos[0]() < x() + width) {
-	//console.log(f);
-	//console.log('kick detected');
-	////if (f.ypos[0]() > y() - 50 && f.ypos[0]() < y() + 50) {
-	////console.log('YOU GOT KICKED');
-	////}
-	//}
-	//});
 };

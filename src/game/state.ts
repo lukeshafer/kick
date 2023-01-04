@@ -22,6 +22,8 @@ export interface Fighter {
 	xpos: Signal<number>;
 	ypos: Signal<number>;
 	vSpeed: Signal<number>;
+	hSpeed: Signal<number>;
+	hTargetSpeed: Signal<number>;
 	platform: Signal<undefined | Record<Dir, number>>;
 	width: number;
 }
@@ -41,6 +43,8 @@ export const addFighter = (name: string, width: number): Fighter => {
 		xpos: createSignal(0),
 		ypos: createSignal(0),
 		vSpeed: createSignal(0),
+		hSpeed: createSignal(0),
+		hTargetSpeed: createSignal(0),
 		platform: createSignal<undefined | { left: number; right: number }>(),
 		width,
 	};

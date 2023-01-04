@@ -37,7 +37,7 @@ const styledRoom = numberToPx(room) as NumToString<typeof room>;
 	<body>
 		<main class="h-screen bg-black flex justify-center items-center">
 			<div
-				class="room flex items-end relative"
+				class="flex items-end relative"
 				style={{
 					...styledRoom,
 				}}>
@@ -50,7 +50,7 @@ const styledRoom = numberToPx(room) as NumToString<typeof room>;
 								bottom: `${platform.bottom}px`,
 								height: `${platform.height}px`,
 								width: `${platform.width}px`,
-								background: platform.background ? platform.background : 'black',
+								background: platform.background || 'black',
 							}}
 						/>
 					))

@@ -4,7 +4,8 @@ import { type FrameName, addFighter, getRoomState } from '../game/state';
 import {
 	groundDetection,
 	gravity,
-	move,
+	walk,
+	horizontalMotion,
 	kickDetection,
 } from '../fighter/interactions';
 
@@ -33,9 +34,11 @@ export default function Fighter({ name, room, frameList, keybinds }: Props) {
 	} = fighter;
 
 	const executeFrame = () => {
-		if (isMoving()) move(fighter);
+		if (isMoving()) walk(fighter);
 		setY(y() + vSpeed());
 		if (isMidair()) gravity([vSpeed, setVSpeed]);
+		horizontalMotion(fighter);
+
 		groundDetection(fighter, room, WIDTH);
 		kickDetection(fighter, getRoomState());
 	};

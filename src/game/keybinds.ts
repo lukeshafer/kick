@@ -17,6 +17,7 @@ export const registerKeys = (
 	const [, setDir] = fighter.direction;
 	const [, setFrame] = fighter.frame;
 	const [, setVSpeed] = fighter.vSpeed;
+	const [, setHTargetSpeed] = fighter.hTargetSpeed;
 	const [isMidair, setIsMidair] = fighter.isMidair;
 	const [isKicking, setIsKicking] = fighter.isKicking;
 
@@ -24,6 +25,7 @@ export const registerKeys = (
 		RIGHT: {
 			up: () => {
 				setIsMoving(false);
+				setHTargetSpeed(0);
 				setFrame('neutral');
 			},
 			down: () => {
@@ -34,6 +36,7 @@ export const registerKeys = (
 		LEFT: {
 			up: () => {
 				setIsMoving(false);
+				setHTargetSpeed(0);
 				setFrame('neutral');
 			},
 			down: () => {
@@ -57,7 +60,7 @@ export const registerKeys = (
 			down: () => {
 				if (!isMidair()) {
 					setIsMidair(true);
-					setVSpeed(8);
+					setVSpeed(10);
 				}
 			},
 		},
