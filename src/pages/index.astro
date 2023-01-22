@@ -1,25 +1,6 @@
 ---
-import Fighter from '../fighter';
-import { room, platforms } from '../rooms/test-room.json';
-
-type NumToString<T> = {
-	[key in keyof T]: T[key] extends number ? string : T[key];
-};
-
-function numberToPx<T extends Record<string, any>>(orig: T) {
-	const keys: (keyof T)[] = Object.keys(orig);
-	const entries = keys.map(
-		(key): [key: keyof T, value: string | T[keyof T]] => {
-			const value =
-				typeof orig[key] === 'number' ? `${orig[key]}px` : orig[key];
-			return [key, value];
-		}
-	);
-	const obj = Object.fromEntries(entries);
-	return obj;
-}
-
-const styledRoom = numberToPx(room) as NumToString<typeof room>;
+import Game from '../components/Game';
+import { testRoom } from '../rooms';
 ---
 
 <html lang="en">
@@ -36,40 +17,11 @@ const styledRoom = numberToPx(room) as NumToString<typeof room>;
 	</head>
 	<body>
 		<main class="h-screen bg-black flex justify-center items-center">
-			<div
-				class="flex items-end relative"
-				style={{
-					...styledRoom,
-				}}>
-				{
-					platforms.map((platform) => (
-						<div
-							class="absolute"
-							style={{
-								left: `${platform.left}px`,
-								bottom: `${platform.bottom}px`,
-								height: `${platform.height}px`,
-								width: `${platform.width}px`,
-								background: platform.background || 'black',
-							}}
-						/>
-					))
-				}
-				<Fighter
-					client:load
-					name="Tony Onion"
-					room={{ room, bounds: room, platforms }}
-					frameList={(await import('../characters.json'))['TonyOnion']}
-					keybinds={{ J: 'LEFT', L: 'RIGHT', I: 'JUMP', K: 'KICK' }}
-				/>
-				<Fighter
-					client:load
-					name="Kicko"
-					room={{ room, bounds: room, platforms }}
-					frameList={(await import('../characters.json'))['Kicko']}
-					keybinds={{ S: 'LEFT', F: 'RIGHT', E: 'JUMP', D: 'KICK' }}
-				/>
-			</div>
+			<Game
+				characterList={['Kicko', 'TonyOnion']}
+				room={testRoom}
+				client:load
+			/>
 		</main>
 	</body>
 </html>
