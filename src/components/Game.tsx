@@ -1,30 +1,26 @@
 import type { RoomData } from '../rooms';
 import { characters, type CharacterKey } from '../characters';
 import { For } from 'solid-js';
-import Fighter from '../fighter';
+import Fighter from '../components/Fighter';
 
-type NumToString<T> = {
-	[key in keyof T]: T[key] extends number ? string : T[key];
+type NumToString<T> = T extends number ? string : T;
+type NumPropsToString<T> = {
+	[key in keyof T]: NumToString<T[key]>;
 };
 
-function numberToPx<T extends Record<string, any>>(orig: T): NumToString<T> {
+function numberToPx<T extends Record<string, any>>(orig: T): NumPropsToString<T> {
 	const keys: (keyof T)[] = Object.keys(orig);
 	const entries = keys.map((key): [key: keyof T, value: string | T[keyof T]] => {
 		const value = typeof orig[key] === 'number' ? `${orig[key]}px` : orig[key];
 		return [key, value];
 	});
-	return Object.fromEntries(entries) as NumToString<T>;
+	return Object.fromEntries(entries) as NumPropsToString<T>;
 }
 
 interface Props {
 	characterList: CharacterKey[];
 	room: RoomData;
 }
-
-const KEYBINDS = [
-	{ J: 'LEFT', L: 'RIGHT', I: 'JUMP', K: 'KICK' },
-	{ S: 'LEFT', F: 'RIGHT', E: 'JUMP', D: 'KICK' },
-] as const;
 
 export default function Game({ characterList, room: roomData }: Props) {
 	const { room, platforms } = roomData;
@@ -60,3 +56,8 @@ export default function Game({ characterList, room: roomData }: Props) {
 		</div>
 	);
 }
+
+const KEYBINDS = [
+	{ J: 'LEFT', L: 'RIGHT', I: 'JUMP', K: 'KICK' },
+	{ S: 'LEFT', F: 'RIGHT', E: 'JUMP', D: 'KICK' },
+] as const;

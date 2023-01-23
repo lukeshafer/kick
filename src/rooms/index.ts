@@ -5,7 +5,7 @@ export const testRoom = {
 		width: 1000,
 		height: 500,
 		background: 'lime',
-	},
+	} satisfies CSSProperties,
 	platforms: [
 		{
 			left: 100,
@@ -35,15 +35,15 @@ export const testRoom = {
 			height: 10,
 			background: 'black',
 		},
-	],
+	]satisfies CSSProperties[],
 } satisfies RoomData;
 
 export interface RoomData {
-	room: CSSProperties;
+	room: Room;
 	platforms: Platform[];
 }
 
-interface Room extends JSX.CSSProperties {
+interface Room {
 	width: number;
 	height: number;
 	background: string;
